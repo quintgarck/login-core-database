@@ -15,3 +15,5 @@ docker-compose build login-postgres
 ## init cont
 docker-compose up -d
 
+## git cmd
+git rm --cached login-core-database.env
