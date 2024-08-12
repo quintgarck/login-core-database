@@ -1,4 +1,4 @@
+login-core-database.env
 *.env
 .env
 /env
-login-core-database.env
