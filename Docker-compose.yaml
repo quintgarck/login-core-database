@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     container_name: login_gcm
     env_file:
-      - .env
+      - login-core-database.env
     volumes:
       - C:/Users/Oskar QuintGarck/DataMain/02-DataCore/02-DataBase/postgres/data:/var/lib/postgresql/data:rw
       - C:/Users/Oskar QuintGarck/DataMain/02-DataCore/02-DataBase/postgres/backup:/var/backups:rw
@@ -27,7 +27,7 @@ services:
     image: dpage/pgadmin4
     container_name: pgadmin_gcm
     env_file:
-      - .env
+      - login-core-database.env
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADM_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADM_PASSWORD}
