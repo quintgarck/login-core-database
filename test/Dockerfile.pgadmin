@@ -1,0 +1,14 @@
+# Usar la imagen base de pgAdmin
+FROM dpage/pgadmin4:latest
+
+# Copiar el script de entrada
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+
+# Establecer permisos para el script
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Configurar el script como entrypoint
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+# Comando por defecto para ejecutar pgAdmin
+CMD ["/usr/local/bin/pgadmin4"]

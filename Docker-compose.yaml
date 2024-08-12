@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  postgres:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: login_gcm
+    env_file:
+      - .env
+    volumes:
+      - C:/Users/Oskar QuintGarck/DataMain/02-DataCore/02-DataBase/postgres/data:/var/lib/postgresql/data:rw
+      - C:/Users/Oskar QuintGarck/DataMain/02-DataCore/02-DataBase/postgres/backup:/var/backups:rw
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    networks:
+      backend-network:
+        ipv4_address: 172.18.0.2
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin_gcm
+    env_file:
+      - .env
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADM_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADM_PASSWORD}
+    ports:
+      - "${PGADMIN_PORT}:80"
+    volumes:
+      - C:/Users/Oskar QuintGarck/DataMain/02-DataCore/02-DataBase/postgres/data:/var/lib/postgresql/data:rw
+      - C:/Users/Oskar QuintGarck/DataMain/02-DataCore/02-DataBase/postgres/backup:/var/backups:rw
+    networks:
+      backend-network:
+        ipv4_address: 172.18.0.3
+    restart: unless-stopped
+
+networks:
+  backend-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16

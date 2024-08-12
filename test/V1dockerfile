@@ -1,0 +1,15 @@
+# Usa la imagen oficial de PostgreSQL como base
+FROM postgres:bullseye
+
+LABEL version="1.0"
+LABEL description="Custom PostgreSQL image with custom configurations"
+
+# Copiar archivos de configuración personalizados
+COPY postgresql.conf /etc/postgresql/postgresql.conf
+COPY pg_hba.conf /etc/postgresql/pg_hba.conf
+
+# Exponer el puerto de PostgreSQL
+EXPOSE 5432
+
+# Configurar el punto de entrada para usar los archivos de configuración personalizados
+CMD ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]

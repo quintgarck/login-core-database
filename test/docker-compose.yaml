@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  login-postgres:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: login_postgres_container
+    env_file:
+      - .env
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - C:/Users/Oskar QuintGarck/DataMain/02-DataCore/02-DataBase/postgres/data:/var/lib/postgresql/data
+      - C:/Users/Oskar QuintGarck/DataMain/02-DataCore/02-DataBase/postgres/backup:/var/backups
+    networks:
+      backend-network:
+        ipv4_address: 172.18.0.2
+    restart: unless-stopped
+
+  pgadmin:
+    build:
+      context: ./
+      dockerfile: Dockerfile.pgadmin
+    container_name: pgadmin_container
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADM_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADM_PASSWORD}
+    ports:
+      - "8080:80"
+    volumes:
+      - C:/Users/Oskar QuintGarck/DataMain/02-DataCore/02-DataBase/postgres/backup:/pgadmin/var/backups
+    networks:
+      backend-network:
+        ipv4_address: 172.18.0.3
+    restart: unless-stopped
+
+networks:
+  backend-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16
